@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">WisataKu</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="username_field">Username</string>
+    <string name="password_field">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="register_here">Register Here</string>
+    <string name="login_as_guest">Login as Guest</string>
+    <string name="email">Email</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="password">Password</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="change_image">Change Image</string>
+    <string name="register_now">REGISTER NOW</string>
+    <string name="login_here">Login Here</string>
+    <string name="dummy">dummy</string>
+    <string name="posts">7 posts</string>
+    <string name="dummy_username">M. Yoga Nugraha</string>
+    <string name="post_now">POST NOW</string>
+    <string name="nature">Nature Tourism</string>
+    <string name="shopping_center">Shopping Center</string>
+    <string name="culinary">Culinary</string>
+</resources>

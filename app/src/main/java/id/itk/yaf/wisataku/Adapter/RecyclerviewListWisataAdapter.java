@@ -24,7 +24,6 @@ public class RecyclerviewListWisataAdapter extends RecyclerView.Adapter<Recycler
 
     private List<Wisata> dataWisata;
     private Context mContext;
-    public View root = null;
     private Bitmap bitmap;
 
     public RecyclerviewListWisataAdapter(Context mContext, List<Wisata> dataWisata){
@@ -43,8 +42,8 @@ public class RecyclerviewListWisataAdapter extends RecyclerView.Adapter<Recycler
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        Wisata wisata = dataWisata.get(position);
+    public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
+        final Wisata wisata = dataWisata.get(position);
 
         ImageView thumbnailWisata = ((CustomViewHolder) holder).thumbnailWisata;
         bitmap = ImageUtility.convert(wisata.getImage());

@@ -60,7 +60,10 @@ public class GuestPage extends AppCompatActivity {
         call.enqueue(new Callback<JSONResponseWisata>() {
             @Override
             public void onResponse(@NonNull Call<JSONResponseWisata> call, @NonNull Response<JSONResponseWisata> response) {
+
                 JSONResponseWisata jsonResponseWisata = response.body();
+
+                Log.d("tag","hasil -> "+jsonResponseWisata.getData());
                 wisataList = new ArrayList<>(Arrays.asList(jsonResponseWisata.getData()));
                 recyclerviewListWisataAdapter = new RecyclerviewListWisataAdapter(mContext, wisataList);
                 recyclerViewAlam.setAdapter(recyclerviewListWisataAdapter);
@@ -69,7 +72,7 @@ public class GuestPage extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<JSONResponseWisata> call, @NonNull Throwable t) {
-                Log.d("Error", t.getMessage());
+                Log.e("tag", t.getMessage());
             }
         });
     }

@@ -3,35 +3,45 @@ package id.itk.yaf.wisataku.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Wisata implements Parcelable {
 
     @SerializedName("id_wisata")
+    @Expose
     private String id_wisata;
 
     @SerializedName("category")
+    @Expose
     private String category;
 
     @SerializedName("id_user")
+    @Expose
     private String id_user;
 
     @SerializedName("title")
+    @Expose
     private String title;
 
     @SerializedName("description")
+    @Expose
     private String description;
 
     @SerializedName("image")
+    @Expose
     private String image;
 
     @SerializedName("latitude")
+    @Expose
     private String latitude;
 
     @SerializedName("longitude")
+    @Expose
     private String longitude;
 
-    public Wisata(String id_wisata, String category, String id_user, String title, String description, String image, String latitude, String longitude) {
+    public Wisata(String id_wisata, String category, String id_user, String title, String description,
+                  String image, String latitude, String longitude) {
         this.id_wisata = id_wisata;
         this.category = category;
         this.id_user = id_user;

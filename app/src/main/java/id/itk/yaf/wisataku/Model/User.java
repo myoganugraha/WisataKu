@@ -6,24 +6,23 @@ import android.os.Parcelable;
 public class User implements Parcelable {
     private int id_user;
     private String website;
-    private String firstname;
-    private String lastname;
+    private String name;
     private String email;
     private String username;
     private String encrypted_password;
     private String profile_picture;
 
-    public User(int id_user, String website, String firstname, String lastname, String email, String username, String encrypted_password, String profile_picture){
+    public User(int id_user, String website, String name, String email, String username, String encrypted_password, String profile_picture){
         this.id_user = id_user;
         this.website = website;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.name = name;
         this.email = email;
         this.encrypted_password = encrypted_password;
         this.profile_picture = profile_picture;
     }
 
     //GETTER
+
     public int getId_user() {
         return id_user;
     }
@@ -32,12 +31,8 @@ public class User implements Parcelable {
         return website;
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
+    public String getName() {
+        return name;
     }
 
     public String getEmail() {
@@ -56,7 +51,9 @@ public class User implements Parcelable {
         return profile_picture;
     }
 
+
     //SETTER
+
 
     public void setId_user(int id_user) {
         this.id_user = id_user;
@@ -66,12 +63,8 @@ public class User implements Parcelable {
         this.website = website;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setEmail(String email) {
@@ -99,8 +92,7 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id_user);
         dest.writeString(this.website);
-        dest.writeString(this.firstname);
-        dest.writeString(this.lastname);
+        dest.writeString(this.name);
         dest.writeString(this.email);
         dest.writeString(this.username);
         dest.writeString(this.encrypted_password);
@@ -110,15 +102,14 @@ public class User implements Parcelable {
     protected User(Parcel in) {
         this.id_user = in.readInt();
         this.website = in.readString();
-        this.firstname = in.readString();
-        this.lastname = in.readString();
+        this.name = in.readString();
         this.email = in.readString();
         this.username = in.readString();
         this.encrypted_password = in.readString();
         this.profile_picture = in.readString();
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {
             return new User(source);

@@ -51,11 +51,8 @@ public class Register extends AppCompatActivity {
     @BindView(R.id.btnSelectImageRegister)
     Button btnSelectImageRegister;
 
-    @BindView(R.id.firstNameRegister)
-    EditText firstname;
-
-    @BindView(R.id.lastNameRegister)
-    EditText lastname;
+    @BindView(R.id.nameRegister)
+    EditText name;
 
     @BindView(R.id.emailRegister)
     EditText email;
@@ -133,8 +130,7 @@ public class Register extends AppCompatActivity {
         progressDialog = ProgressDialog.show(mContext, null, "Please Wait ...", true, false);
 
         baseAPIService.registerRequest(
-                firstname.getText().toString(),
-                lastname.getText().toString(),
+                name.getText().toString(),
                 email.getText().toString(),
                 username.getText().toString(),
                 MD5Encode.md5(password.getText().toString()),

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -45,11 +46,10 @@ public class RecyclerviewListWisataAdapter extends RecyclerView.Adapter<Recycler
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
         final Wisata wisata = dataWisata.get(position);
 
-        ImageView thumbnailWisata = ((CustomViewHolder) holder).thumbnailWisata;
-        bitmap = ImageUtility.convert(wisata.getImage());
+
         Glide.with(mContext)
-                .load(bitmap)
-                .into(thumbnailWisata);
+                .load(wisata.getImage())
+                .into(holder.thumbnailWisata);
 
         holder.titleWisata.setText(wisata.getTitle());
     }

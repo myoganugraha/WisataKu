@@ -1,12 +1,15 @@
 package id.itk.yaf.wisataku.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,10 +48,6 @@ public class GuestPage extends AppCompatActivity {
     @BindView(R.id.linearLayoutGuest)
     LinearLayout linearLayoutGuestWrapper;
 
-
-
-    @BindView(R.id.noInternet)
-    TextView noInternet;
 
     private Context mContext;
     private RecyclerviewListWisataAdapter recyclerviewListWisataAdapter;
@@ -171,6 +170,25 @@ public class GuestPage extends AppCompatActivity {
                 Log.e("tag", t.getMessage());
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_guest_activity, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.goto_login:
+                Intent intent = new Intent(GuestPage.this, Login.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

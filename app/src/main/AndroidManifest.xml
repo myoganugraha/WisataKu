@@ -23,6 +23,7 @@
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.Register" />
         <activity android:name=".Activity.GuestPage"/>
+        <activity android:name=".Activity.DetailWisata" />
 
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

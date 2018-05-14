@@ -24,4 +24,5 @@
     <string name="shopping_center">Shopping Center</string>
     <string name="culinary">Culinary</string>
     <string name="Fullname">Fullname</string>
+    <string name="login_button_guest_activity">Login Here</string>
 </resources>

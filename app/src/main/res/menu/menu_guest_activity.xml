@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/goto_login"
-        android:title="Login Here"
+        android:title="@string/login_button_guest_activity"
         android:orderInCategory="100"
 
         app:showAsAction="always" />

@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -22,12 +22,13 @@
         </activity>
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.Register" />
-        <activity android:name=".Activity.GuestPage"/>
+        <activity android:name=".Activity.GuestPage" />
         <activity android:name=".Activity.DetailWisata" />
-
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".Activity.TambahWisata"
+            android:parentActivityName=".Activity.MainActivity"/>
     </application>
 
 </manifest>

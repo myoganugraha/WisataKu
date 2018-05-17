@@ -25,4 +25,9 @@
     <string name="culinary">Culinary</string>
     <string name="Fullname">Fullname</string>
     <string name="login_button_guest_activity">Login Here</string>
+    <string name="title_wisata">Title Wisata</string>
+    <string name="description_wisata">Description</string>
+    <string name="shopping">Shopping</string>
+    <string name="nature_wisata">Nature</string>
+    <string name="culinary_wisata">Culinary</string>
 </resources>

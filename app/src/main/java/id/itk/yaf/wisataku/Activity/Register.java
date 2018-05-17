@@ -77,7 +77,7 @@ public class Register extends AppCompatActivity {
     private Context mContext;
     private BaseAPIService baseAPIService;
     private ProgressDialog progressDialog;
-    private Bitmap imageSelected;
+    Bitmap imageSelected;
 
 
     @Override

@@ -23,6 +23,7 @@ import id.itk.yaf.wisataku.API.BaseAPIService;
 import id.itk.yaf.wisataku.API.UtilsAPI;
 import id.itk.yaf.wisataku.R;
 import id.itk.yaf.wisataku.Utility.MD5Encode;
+import id.itk.yaf.wisataku.Utility.SessionManager;
 import okhttp3.ResponseBody;
 import pl.tajchert.nammu.Nammu;
 import retrofit2.Call;
@@ -49,6 +50,7 @@ public class Login extends AppCompatActivity {
     private BaseAPIService baseAPIService;
     private ProgressDialog progressDialog;
     private Context mContext;
+    SessionManager session;
 
 
     @Override
@@ -60,6 +62,18 @@ public class Login extends AppCompatActivity {
         Nammu.init(this);
         mContext = this;
         baseAPIService = UtilsAPI.getAPIService();
+        initSession();
+    }
+
+    private void initSession() {
+        session = new SessionManager(getApplicationContext());
+
+        if (session.isLoggedIn()){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            finish();
+        }
+
     }
 
     @OnClick (R.id.btnToRegisterActivity)
@@ -93,9 +107,10 @@ public class Login extends AppCompatActivity {
                                 JSONObject jsonResult = new JSONObject(response.body().string());
 
                                 if(jsonResult.getString("error").equals("false")){
+                                    session.createLoginSession(usernameLogin.getText().toString());
                                     Toast.makeText(mContext, "Welcome Back, " + usernameLogin.getText().toString(), Toast.LENGTH_SHORT).show();
 
-                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }

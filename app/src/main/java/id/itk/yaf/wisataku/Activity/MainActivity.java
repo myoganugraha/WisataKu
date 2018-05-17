@@ -20,13 +20,14 @@ import butterknife.OnClick;
 import id.itk.yaf.wisataku.Fragment.ProfileFragment;
 import id.itk.yaf.wisataku.Fragment.WisataFragment;
 import id.itk.yaf.wisataku.R;
+import id.itk.yaf.wisataku.Utility.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.bnve)
     BottomNavigationViewEx bnve;
 
-    
+    SessionManager session;
     Context mContext;
 
 
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         bnve.setIconSize(24, 24);
 
         bnve();
+
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
     }
 
     @OnClick(R.id.floatingActionButton)

@@ -23,7 +23,9 @@
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.Register" />
         <activity android:name=".Activity.GuestPage" />
-        <activity android:name=".Activity.DetailWisata" />
+        <activity
+            android:name=".Activity.DetailWisata"
+            android:theme="@style/AppThemeNoActionBar"/>
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

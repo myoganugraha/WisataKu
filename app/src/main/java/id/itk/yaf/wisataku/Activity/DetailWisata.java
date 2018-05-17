@@ -6,18 +6,31 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import id.itk.yaf.wisataku.Model.Wisata;
 import id.itk.yaf.wisataku.R;
 
 public class DetailWisata extends AppCompatActivity {
-    private CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.detailThumbnail)
+    ImageView detailImage;
+
+    @BindView(R.id.description_detail)
+    TextView desciptionDetail;
+
     private Context mContext;
-    private ImageView detailImage;
-    private Toolbar toolbar;
     Wisata dataWisata;
 
     @Override
@@ -25,20 +38,22 @@ public class DetailWisata extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_wisata);
 
+        ButterKnife.bind(this);
         mContext = this;
         initComponents();
     }
 
     private void initComponents() {
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-
-        detailImage = (ImageView) findViewById(R.id.detailThumbnail);
         dataWisata = getIntent().getParcelableExtra("dataWisata");
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbarLayout.setTitle(dataWisata.getTitle());
         Glide.with(mContext)
                 .load(dataWisata.getImage())
                 .into(detailImage);
 
+        desciptionDetail.setText(dataWisata.getDescription());
     }
 }

@@ -1,9 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activity.TambahWisata">
+    android:id="@+id/linearLayoutTambahWisata"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/titleWisataWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <EditText
+                android:id="@+id/titleWisata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title_wisata"
+                android:inputType="textPersonName" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/descriptionWisataWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <EditText
+                android:id="@+id/descriptionWisata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/description_wisata"
+                android:inputType="textEmailAddress" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <RadioGroup
+            android:id="@+id/radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <RadioButton
+                android:id="@+id/radioAlam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nature_wisata"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/radioBelanja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shopping" />
+
+            <RadioButton
+                android:id="@+id/radioKuliner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/culinary_wisata" />
+
+        </RadioGroup>
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutLatLongTambahWisata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/LatTambahWisata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Latitude : 12039908213"/>
+
+            <TextView
+                android:id="@+id/LongTambahWisata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Longitude : 12039908213"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSelectImageTambahWisata"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_select_image_register"
+            android:text="@string/choose_image"
+            android:textColor="@color/colorPrimary"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutSelectImageRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btnChangeImageRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_select_image_register"
+                android:text="@string/change_image"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/colorPrimary"/>
+
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnProcedTambahWisata"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/rounded_edittext"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/register_now"
+            android:textColor="@color/white" />
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

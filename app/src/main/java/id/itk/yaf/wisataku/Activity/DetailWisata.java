@@ -10,13 +10,21 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
+import com.codesgood.views.JustifiedTextView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.itk.yaf.wisataku.Model.Wisata;
 import id.itk.yaf.wisataku.R;
 
-public class DetailWisata extends AppCompatActivity {
+public class DetailWisata extends AppCompatActivity implements OnMapReadyCallback {
 
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -28,10 +36,16 @@ public class DetailWisata extends AppCompatActivity {
     ImageView detailImage;
 
     @BindView(R.id.description_detail)
-    TextView desciptionDetail;
+    JustifiedTextView desciptionDetail;
+
+    //@BindView(R.id.map)
+    //SupportMapFragment mapFragment;
 
     private Context mContext;
     Wisata dataWisata;
+
+    GoogleMap googleMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +55,9 @@ public class DetailWisata extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
         initComponents();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     private void initComponents() {
@@ -55,5 +72,15 @@ public class DetailWisata extends AppCompatActivity {
                 .into(detailImage);
 
         desciptionDetail.setText(dataWisata.getDescription());
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng position = new LatLng(Double.parseDouble(dataWisata.getLatitude()), Double.parseDouble(dataWisata.getLongitude()));
+        googleMap.addMarker(new MarkerOptions()
+                .position(position)
+                .title(dataWisata.getTitle()));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position,15.0f));
     }
 }

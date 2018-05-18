@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -31,6 +32,8 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".Activity.TambahWisata"
             android:parentActivityName=".Activity.MainActivity"/>
+
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCVGE_61Qs1sjzkLjSEOJljzRiklgqdX-A"/>
     </application>
 
 </manifest>

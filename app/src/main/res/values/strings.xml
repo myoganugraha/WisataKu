@@ -30,4 +30,6 @@
     <string name="shopping">Shopping</string>
     <string name="nature_wisata">Nature</string>
     <string name="culinary_wisata">Culinary</string>
+    <string name="description_detail_title">Description</string>
+    <string name="location_detail_header">Location</string>
 </resources>

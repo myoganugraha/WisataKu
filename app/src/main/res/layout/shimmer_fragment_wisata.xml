@@ -1,0 +1,26 @@
+<LinearLayout android:id="@+id/linearLayoutfragment_wisataWisataAlamWrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <View
+        android:id="@+id/view_title"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorShimmer"/>
+
+    <View
+        android:id="@+id/view_image"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="8dp"
+        android:background="@color/colorShimmer" />
+
+</LinearLayout>

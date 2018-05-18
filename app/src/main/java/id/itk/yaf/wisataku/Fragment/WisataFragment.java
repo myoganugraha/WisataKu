@@ -12,6 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +50,11 @@ public class WisataFragment extends Fragment {
     @BindView(R.id.recycler_view_fragment_wisata_kuliner)
     RecyclerView recyclerviewKulinerFragmentWisata;
 
+    @BindView(R.id.shimmer_layout)
+    ShimmerFrameLayout shimmerFrameLayout;
+
+    @BindView(R.id.fragmentWisataNatureHeader)
+    TextView natureHeader;
 
     private RecyclerviewListWisataAdapter recyclerviewListWisataAdapter;
     private List<Wisata> wisataList = new ArrayList<Wisata>();;
@@ -70,6 +78,12 @@ public class WisataFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        shimmerFrameLayout.stopShimmerAnimation();
     }
 
 
@@ -121,6 +135,9 @@ public class WisataFragment extends Fragment {
     }
 
     private void loadJSONAlam() {
+        natureHeader.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
         BaseAPIService baseAPIService = RetrofitClient.getClient("http://sicentang.xyz/ppb/").create(BaseAPIService.class);
         Call<JSONResponseWisata> call = baseAPIService.getJSONAlam();
 
@@ -135,11 +152,16 @@ public class WisataFragment extends Fragment {
                 recyclerviewListWisataAdapter = new RecyclerviewListWisataAdapter(getActivity(), wisataList);
                 recyclerviewAlamFragmentWisata.setAdapter(recyclerviewListWisataAdapter);
                 recyclerviewListWisataAdapter.notifyDataSetChanged();
+                shimmerFrameLayout.stopShimmerAnimation();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                natureHeader.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(@NonNull Call<JSONResponseWisata> call, @NonNull Throwable t) {
                 Log.e("tag", t.getMessage());
+                shimmerFrameLayout.stopShimmerAnimation();
+                natureHeader.setVisibility(View.VISIBLE);
             }
         });
     }

@@ -37,7 +37,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WisataFragment extends Fragment {
+public class WisataFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
 
@@ -50,11 +50,26 @@ public class WisataFragment extends Fragment {
     @BindView(R.id.recycler_view_fragment_wisata_kuliner)
     RecyclerView recyclerviewKulinerFragmentWisata;
 
-    @BindView(R.id.shimmer_layout)
-    ShimmerFrameLayout shimmerFrameLayout;
+    @BindView(R.id.shimmer_layout_alam)
+    ShimmerFrameLayout shimmerFrameLayoutAlam;
+
+    @BindView(R.id.shimmer_layout_belanja)
+    ShimmerFrameLayout shimmerFrameLayoutBelanja;
+
+    @BindView(R.id.shimmer_layout_kuliner)
+    ShimmerFrameLayout shimmerFrameLayoutKuliner;
 
     @BindView(R.id.fragmentWisataNatureHeader)
     TextView natureHeader;
+
+    @BindView(R.id.fragmentWisataShoppingHeader)
+    TextView shoppingHeader;
+
+    @BindView(R.id.fragmentWisataCulinaryHeader)
+    TextView culinaryHeader;
+
+    @BindView(R.id.swipeToRefresh)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private RecyclerviewListWisataAdapter recyclerviewListWisataAdapter;
     private List<Wisata> wisataList = new ArrayList<Wisata>();;
@@ -83,7 +98,9 @@ public class WisataFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        shimmerFrameLayout.stopShimmerAnimation();
+        shimmerFrameLayoutAlam.stopShimmerAnimation();
+        shimmerFrameLayoutBelanja.stopShimmerAnimation();
+        shimmerFrameLayoutKuliner.stopShimmerAnimation();
     }
 
 
@@ -101,6 +118,10 @@ public class WisataFragment extends Fragment {
         LinearLayoutManager llmAlam = new LinearLayoutManager(getActivity());
         llmAlam.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerviewAlamFragmentWisata.setLayoutManager(llmAlam);
+
+
+        shimmerFrameLayoutAlam.setVisibility(View.VISIBLE);
+        shimmerFrameLayoutAlam.startShimmerAnimation();
         loadJSONAlam();
         ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -110,6 +131,10 @@ public class WisataFragment extends Fragment {
         LinearLayoutManager llmBelanja = new LinearLayoutManager(getActivity());
         llmBelanja.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerviewBelanjaFragmentWisata.setLayoutManager(llmBelanja);
+
+
+        shimmerFrameLayoutBelanja.setVisibility(View.VISIBLE);
+        shimmerFrameLayoutBelanja.startShimmerAnimation();
         loadJSONBelanja();
         ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -119,8 +144,14 @@ public class WisataFragment extends Fragment {
         LinearLayoutManager llmKuliner = new LinearLayoutManager(getActivity());
         llmKuliner.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerviewKulinerFragmentWisata.setLayoutManager(llmKuliner);
+
+
+        shimmerFrameLayoutKuliner.setVisibility(View.VISIBLE);
+        shimmerFrameLayoutKuliner.startShimmerAnimation();
         loadJSONKuliner();
 
+
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         return view;
     }
@@ -135,9 +166,7 @@ public class WisataFragment extends Fragment {
     }
 
     private void loadJSONAlam() {
-        natureHeader.setVisibility(View.GONE);
-        shimmerFrameLayout.setVisibility(View.VISIBLE);
-        shimmerFrameLayout.startShimmerAnimation();
+
         BaseAPIService baseAPIService = RetrofitClient.getClient("http://sicentang.xyz/ppb/").create(BaseAPIService.class);
         Call<JSONResponseWisata> call = baseAPIService.getJSONAlam();
 
@@ -152,21 +181,24 @@ public class WisataFragment extends Fragment {
                 recyclerviewListWisataAdapter = new RecyclerviewListWisataAdapter(getActivity(), wisataList);
                 recyclerviewAlamFragmentWisata.setAdapter(recyclerviewListWisataAdapter);
                 recyclerviewListWisataAdapter.notifyDataSetChanged();
-                shimmerFrameLayout.stopShimmerAnimation();
-                shimmerFrameLayout.setVisibility(View.GONE);
+
+                shimmerFrameLayoutAlam.stopShimmerAnimation();
+                shimmerFrameLayoutAlam.setVisibility(View.GONE);
                 natureHeader.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(@NonNull Call<JSONResponseWisata> call, @NonNull Throwable t) {
                 Log.e("tag", t.getMessage());
-                shimmerFrameLayout.stopShimmerAnimation();
-                natureHeader.setVisibility(View.VISIBLE);
+
+                shimmerFrameLayoutAlam.stopShimmerAnimation();
             }
         });
     }
 
     private void loadJSONBelanja() {
+
         BaseAPIService baseAPIService = RetrofitClient.getClient("http://sicentang.xyz/ppb/").create(BaseAPIService.class);
         Call<JSONResponseWisata> call = baseAPIService.getJSONBelanja();
 
@@ -181,16 +213,24 @@ public class WisataFragment extends Fragment {
                 recyclerviewListWisataAdapter = new RecyclerviewListWisataAdapter(getActivity(), wisataList);
                 recyclerviewBelanjaFragmentWisata.setAdapter(recyclerviewListWisataAdapter);
                 recyclerviewListWisataAdapter.notifyDataSetChanged();
+
+                shimmerFrameLayoutBelanja.stopShimmerAnimation();
+                shimmerFrameLayoutBelanja.setVisibility(View.GONE);
+                shoppingHeader.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(@NonNull Call<JSONResponseWisata> call, @NonNull Throwable t) {
                 Log.e("tag", t.getMessage());
+
+                shimmerFrameLayoutBelanja.stopShimmerAnimation();
             }
         });
     }
 
     private void loadJSONKuliner() {
+
         BaseAPIService baseAPIService = RetrofitClient.getClient("http://sicentang.xyz/ppb/").create(BaseAPIService.class);
         Call<JSONResponseWisata> call = baseAPIService.getJSONKuliner();
 
@@ -205,13 +245,26 @@ public class WisataFragment extends Fragment {
                 recyclerviewListWisataAdapter = new RecyclerviewListWisataAdapter(getActivity(), wisataList);
                 recyclerviewKulinerFragmentWisata.setAdapter(recyclerviewListWisataAdapter);
                 recyclerviewListWisataAdapter.notifyDataSetChanged();
+
+                shimmerFrameLayoutKuliner.stopShimmerAnimation();
+                shimmerFrameLayoutKuliner.setVisibility(View.GONE);
+                culinaryHeader.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(@NonNull Call<JSONResponseWisata> call, @NonNull Throwable t) {
                 Log.e("tag", t.getMessage());
+
+                shimmerFrameLayoutKuliner.stopShimmerAnimation();
             }
         });
     }
 
+    @Override
+    public void onRefresh() {
+        loadJSONAlam();
+        loadJSONBelanja();
+        loadJSONKuliner();
+    }
 }

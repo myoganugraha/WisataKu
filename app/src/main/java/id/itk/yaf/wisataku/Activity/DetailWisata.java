@@ -64,7 +64,6 @@ public class DetailWisata extends AppCompatActivity implements OnMapReadyCallbac
         dataWisata = getIntent().getParcelableExtra("dataWisata");
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbarLayout.setTitle(dataWisata.getTitle());
         Glide.with(mContext)

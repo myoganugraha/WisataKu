@@ -125,6 +125,11 @@ public class Register extends AppCompatActivity {
         EasyImage.openChooserWithGallery(Register.this, "Choose Picture", REQUEST_CHOOSE_IMAGE);
     }
 
+    @OnClick(R.id.btnChangeImageRegister)
+    public void changeImage(){
+        EasyImage.openChooserWithGallery(Register.this, "Choose Picture", REQUEST_CHOOSE_IMAGE);
+    }
+
     @OnClick(R.id.btnPRocedRegister)
     public void procedRegister(){
         progressDialog = ProgressDialog.show(mContext, null, "Please Wait ...", true, false);
@@ -182,6 +187,7 @@ public class Register extends AppCompatActivity {
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
             @Override
             public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
+
                 CropImage.activity(Uri.fromFile(imageFile))
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setCropShape(CropImageView.CropShape.OVAL)

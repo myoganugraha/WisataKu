@@ -3,23 +3,48 @@ package id.itk.yaf.wisataku.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable {
-    private int id_user;
-    private String website;
-    private String name;
-    private String email;
-    private String username;
-    private String encrypted_password;
-    private String profile_picture;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-    public User(int id_user, String website, String name, String email, String username, String encrypted_password, String profile_picture){
+import java.util.List;
+
+public class User {
+
+    @SerializedName("id_user")
+    @Expose
+    private int id_user;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("username")
+    @Expose
+    private String username;
+    @SerializedName("encrypted_password")
+    @Expose
+    private String encrypted_password;
+    @SerializedName("website")
+    @Expose
+    private String website;
+    @SerializedName("profile_picture")
+    @Expose
+    private String profile_picture;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+
+    private List<User> user;
+
+    /*public User(int id_user, String website, String name, String email, String username, String encrypted_password, String profile_picture){
         this.id_user = id_user;
         this.website = website;
         this.name = name;
         this.email = email;
         this.encrypted_password = encrypted_password;
         this.profile_picture = profile_picture;
-    }
+    }*/
 
     //GETTER
 
@@ -83,41 +108,4 @@ public class User implements Parcelable {
         this.profile_picture = profile_picture;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id_user);
-        dest.writeString(this.website);
-        dest.writeString(this.name);
-        dest.writeString(this.email);
-        dest.writeString(this.username);
-        dest.writeString(this.encrypted_password);
-        dest.writeString(this.profile_picture);
-    }
-
-    protected User(Parcel in) {
-        this.id_user = in.readInt();
-        this.website = in.readString();
-        this.name = in.readString();
-        this.email = in.readString();
-        this.username = in.readString();
-        this.encrypted_password = in.readString();
-        this.profile_picture = in.readString();
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel source) {
-            return new User(source);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 }

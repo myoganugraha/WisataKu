@@ -9,19 +9,27 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.nio.channels.WritePendingException;
+import com.google.gson.Gson;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import id.itk.yaf.wisataku.Activity.Login;
+import id.itk.yaf.wisataku.Model.User;
 import id.itk.yaf.wisataku.R;
 import id.itk.yaf.wisataku.Utility.SessionManager;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,10 +37,18 @@ import id.itk.yaf.wisataku.Utility.SessionManager;
 public class ProfileFragment extends Fragment {
     private Context mContext;
     private SessionManager session;
+    private Unbinder unbinder;
+
+    @BindView(R.id.fullnameProfile)
+    TextView fullnameProfile;
+
+    SharedPreferences  mPrefs;
 
     public static ProfileFragment newInstance(){
         return new ProfileFragment();
     }
+
+    String json_response;
 
     @Override
     public void onAttach(Context mContext) {
@@ -46,7 +62,30 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         session = new SessionManager(getActivity());
+        unbinder = ButterKnife.bind(this, view);
 
+
+        /*GSONSharedPreferences gsonSharedPreferences = new GSONSharedPreferences(mContext, "user");
+        User user= null;
+
+        try {
+            user = (User) gsonSharedPreferences.getObject(new User());
+            Log.i("test", user.getUsername());
+        } catch (ParsingException e) {
+            e.printStackTrace();
+        }
+
+
+        Gson gson = new Gson();
+        json_response = mPrefs.getString("UserResponse", "");
+        User obj = gson.fromJson(json_response, User.class);
+
+        //User user = new Gson().fromJson(json_response, User.class);
+        //Log.d("test", obj.getUsername());
+
+        fullnameProfile.setText(obj.getName());*/
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("dummyUsernameHere");
         return view;
     }
 

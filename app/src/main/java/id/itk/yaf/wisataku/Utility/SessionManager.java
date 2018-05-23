@@ -25,6 +25,12 @@ public class SessionManager {
     private static final String IS_LOGIN ="IsLoggedIn";
 
     public static final String KEY_USERNAME = "username";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_PASSWORD = "encrypted_password";
+    public static final String KEY_WEBSITE = "website";
+    public static final String KEY_PROFILE_PICTURE = "profile_picture";
+
     public static final String KEY_JSON = "user_json";
 
     @SuppressLint("CommitPrefEdits")
@@ -65,6 +71,10 @@ public class SessionManager {
         HashMap<String, String> user = new HashMap<String, String>();
         // user username
         user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
+        //user.put(KEY_NAME, pref.getString(KEY_NAME, null));
+        //user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        //user.put(KEY_WEBSITE, pref.getString(KEY_WEBSITE, null));
+        //user.put(KEY_PROFILE_PICTURE, pref.getString(KEY_PROFILE_PICTURE, null));
 
         // return user
         return user;

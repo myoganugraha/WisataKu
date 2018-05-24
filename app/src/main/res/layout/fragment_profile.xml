@@ -12,7 +12,8 @@
     <RelativeLayout
         android:id="@+id/lineearLayoutProfile1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp">
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -30,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/displayPictureProfile"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="35dp">
 
             <TextView
@@ -41,10 +42,9 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/profile_posts"
+                android:id="@+id/profile_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/posts"
                 android:textSize="15sp"
                 android:layout_below="@id/fullnameProfile"/>
 
@@ -52,7 +52,7 @@
                 android:id="@+id/profile_website"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/profile_posts"
+                android:layout_below="@id/profile_email"
                 android:text="@string/dummy"
                 android:autoLink="web"/>
         </RelativeLayout>

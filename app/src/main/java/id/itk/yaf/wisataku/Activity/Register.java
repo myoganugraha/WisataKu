@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +51,9 @@ public class Register extends AppCompatActivity {
 
     @BindView(R.id.btnSelectImageRegister)
     Button btnSelectImageRegister;
+
+    @BindView(R.id.btnPRocedRegister)
+    Button btnRegister;
 
     @BindView(R.id.nameRegister)
     EditText name;
@@ -90,12 +94,45 @@ public class Register extends AppCompatActivity {
         }
 
         ButterKnife.bind(this);
-        Nammu.init(this);
         mContext = this;
         baseAPIService = UtilsAPI.getAPIService();
         EasyImage.configuration(this)
                 .setImagesFolderName("WisataKu") // images folder name, default is "EasyImage"
                 .saveInRootPicturesDirectory(); // if you want to use internal memory for storying images - default
+
+        registerVerification();
+    }
+
+    private void registerVerification() {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(name.getText().toString().length() < 3){
+                    Toast.makeText(mContext, "Give use your fullname, hooman", Toast.LENGTH_SHORT).show();
+                }
+                else if(email.getText().toString().length() < 7){
+                    Toast.makeText(mContext, "Real email hooman", Toast.LENGTH_SHORT).show();
+                }
+                else if(!isValidEmail(email.getText().toString())){
+                    Toast.makeText(mContext, "Nah, you get caught using fake email", Toast.LENGTH_SHORT).show();
+                }
+                else if(username.getText().toString().length() < 6){
+                    Toast.makeText(mContext, "That username to short, hooman", Toast.LENGTH_SHORT).show();
+                }
+                else if(password.getText().toString().length() < 6){
+                    Toast.makeText(mContext, "The password was to short, we can't save it", Toast.LENGTH_SHORT).show();
+                }
+                else  if(!Patterns.WEB_URL.matcher(website.getText().toString()).matches()){
+                    Toast.makeText(mContext, "Just give your link, hooman", Toast.LENGTH_SHORT).show();
+                }
+                else if(displayPictureRegister.getVisibility() == View.GONE){
+                    Toast.makeText(mContext, "Le me see your face, hooman", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    procedRegister();
+                }
+            }
+        });
 
     }
 
@@ -130,7 +167,6 @@ public class Register extends AppCompatActivity {
         EasyImage.openChooserWithGallery(Register.this, "Choose Picture", REQUEST_CHOOSE_IMAGE);
     }
 
-    @OnClick(R.id.btnPRocedRegister)
     public void procedRegister(){
         progressDialog = ProgressDialog.show(mContext, null, "Please Wait ...", true, false);
 
@@ -239,9 +275,18 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public static boolean isValidEmail(String email) {
+        boolean validate;
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        String emailPattern2 = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+";
+
+        if (email.matches(emailPattern)) {
+            validate = true;
+        } else if (email.matches(emailPattern2)) {
+            validate = true;
+        } else {
+            validate = false;
+        }
+        return validate;
     }
 }

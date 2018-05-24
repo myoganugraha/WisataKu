@@ -10,26 +10,30 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 import id.itk.yaf.wisataku.Activity.Login;
 import id.itk.yaf.wisataku.Model.User;
 import id.itk.yaf.wisataku.R;
 import id.itk.yaf.wisataku.Utility.SessionManager;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,16 +43,25 @@ public class ProfileFragment extends Fragment {
     private SessionManager session;
     private Unbinder unbinder;
 
+    SharedPreferences mPrefs;
+
     @BindView(R.id.fullnameProfile)
     TextView fullnameProfile;
 
-    SharedPreferences  mPrefs;
+    @BindView(R.id.profile_website)
+    TextView profileWebsite;
 
-    public static ProfileFragment newInstance(){
+    @BindView(R.id.profile_email)
+    TextView profileEmail;
+
+    @BindView(R.id.displayPictureProfile)
+    CircleImageView profilePicture;
+
+
+    public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
 
-    String json_response;
 
     @Override
     public void onAttach(Context mContext) {
@@ -64,28 +77,26 @@ public class ProfileFragment extends Fragment {
         session = new SessionManager(getActivity());
         unbinder = ButterKnife.bind(this, view);
 
+        mPrefs = this.getActivity().getSharedPreferences(Login.MY_PREFS, Context.MODE_PRIVATE);
 
-        /*GSONSharedPreferences gsonSharedPreferences = new GSONSharedPreferences(mContext, "user");
-        User user= null;
+        Log.d("hallo", "sudah masuk profile fragment");
 
-        try {
-            user = (User) gsonSharedPreferences.getObject(new User());
-            Log.i("test", user.getUsername());
-        } catch (ParsingException e) {
-            e.printStackTrace();
-        }
 
 
         Gson gson = new Gson();
-        json_response = mPrefs.getString("UserResponse", "");
-        User obj = gson.fromJson(json_response, User.class);
+        String json_response = mPrefs.getString("UserResponse", "");
+        json_response = json_response.substring(22, json_response.length() - 1);
+        User user = gson.fromJson(json_response, User.class);
 
-        //User user = new Gson().fromJson(json_response, User.class);
-        //Log.d("test", obj.getUsername());
+        fullnameProfile.setText(user.getName());
+        profileWebsite.setText(user.getWebsite());
+        profileEmail.setText(user.getEmail());
 
-        fullnameProfile.setText(obj.getName());*/
+        Glide.with(mContext)
+                .load(user.getProfile_picture())
+                .into(profilePicture);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("dummyUsernameHere");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(user.getUsername());
         return view;
     }
 

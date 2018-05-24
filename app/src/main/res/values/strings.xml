@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WisataKu</string>
+    <string name="app_name">tour de Balikpapan</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -25,7 +25,7 @@
     <string name="culinary">Culinary</string>
     <string name="Fullname">Fullname</string>
     <string name="login_button_guest_activity">Login Here</string>
-    <string name="title_wisata">Title Wisata</string>
+    <string name="title_wisata">Tourist Name</string>
     <string name="description_wisata">Description</string>
     <string name="shopping">Shopping</string>
     <string name="nature_wisata">Nature</string>

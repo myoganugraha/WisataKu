@@ -3,9 +3,11 @@ package id.itk.yaf.wisataku.Activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -18,9 +20,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +43,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,15 +56,29 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import id.itk.yaf.wisataku.API.BaseAPIService;
+import id.itk.yaf.wisataku.API.UtilsAPI;
+import id.itk.yaf.wisataku.Model.User;
 import id.itk.yaf.wisataku.R;
+import id.itk.yaf.wisataku.Utility.ImageUtility;
+import okhttp3.ResponseBody;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import pl.tajchert.nammu.Nammu;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TambahWisata extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
+
+    @BindView(R.id.titleWisata)
+    EditText titleTambahWisata;
+
+    @BindView(R.id.descriptionWisata)
+    EditText descriptionTambahWisata;
 
     @BindView(R.id.LatTambahWisata)
     TextView latitudeTambahWisata;
@@ -72,7 +95,12 @@ public class TambahWisata extends AppCompatActivity implements OnMapReadyCallbac
     @BindView(R.id.ivTambahWisata)
     ImageView ivTambahWisata;
 
+    @BindView(R.id.radio)
+    RadioGroup rg;
+
     private Context mContext;
+    private BaseAPIService baseAPIService;
+    private ProgressDialog progressDialog;
 
     Double latitude, longitude;
     GoogleMap mGoogleMap;
@@ -82,7 +110,11 @@ public class TambahWisata extends AppCompatActivity implements OnMapReadyCallbac
     Marker mCurrLocationMarker;
     SupportMapFragment mapFragment;
 
+    SharedPreferences mPrefs;
+    User user;
+
     Bitmap imageSelected;
+    int selectId;
 
     private static final int REQUEST_CHOOSE_IMAGE = 3;
 
@@ -96,12 +128,72 @@ public class TambahWisata extends AppCompatActivity implements OnMapReadyCallbac
 
         getSupportActionBar().setTitle("Tambah Wisata");
 
+        mPrefs = getSharedPreferences(Login.MY_PREFS, Context.MODE_PRIVATE);
+        baseAPIService = UtilsAPI.getAPIService();
+
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapTambahWisata);
         mapFragment.getMapAsync(this);
 
         EasyImage.configuration(this)
                 .setImagesFolderName("WisataKu") // images folder name, default is "EasyImage"
                 .saveInRootPicturesDirectory();
+
+        getUserData();
+        selectJenisWisata();
+        initProced();
+    }
+
+    private void initProced() {
+        btnProcedTambahWissata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(titleTambahWisata.getText().toString() == null ){
+                    Toast.makeText(mContext, "Tourist Name can't be empty", Toast.LENGTH_SHORT).show();
+                }
+                else if(titleTambahWisata.getText().toString().length() < 5){
+                    Toast.makeText(mContext, "What a short name", Toast.LENGTH_SHORT).show();
+                }
+                else if(descriptionTambahWisata.getText().toString() == null){
+                    Toast.makeText(mContext, "Describe the tourist please", Toast.LENGTH_SHORT).show();
+                }
+                else if(descriptionTambahWisata.getText().toString().length() < 10){
+                    Toast.makeText(mContext, "Describe more, more happiness", Toast.LENGTH_SHORT).show();
+                }
+                else if(ivTambahWisata.getVisibility() == View.GONE){
+                    Toast.makeText(mContext, "Give us your best photo", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    procedTambahWisata();
+                }
+            }
+        });
+    }
+
+    private void selectJenisWisata() {
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.radioAlam:
+                        selectId = 1;
+                        break;
+                    case R.id.radioBelanja:
+                        selectId = 2;
+                        break;
+                    case R.id.radioKuliner:
+                        selectId = 3;
+                        break;
+                }
+            }
+        });
+    }
+
+    private void getUserData() {
+        Gson gson = new Gson();
+        String json_response = mPrefs.getString("UserResponse", "");
+        json_response = json_response.substring(22, json_response.length() - 1);
+        Log.d("json_response", json_response);
+        user = gson.fromJson(json_response, User.class);
     }
 
     @Override
@@ -159,8 +251,8 @@ public class TambahWisata extends AppCompatActivity implements OnMapReadyCallbac
         latitude = latLng.latitude;
         longitude = latLng.longitude;
 
-        latitudeTambahWisata.setText("Your Latitude: " + latitude.toString());
-        longitudeTambahWisata.setText("Your Longitude: " + longitude.toString());
+        latitudeTambahWisata.setText("Your Positon: " + latitude.toString());
+        longitudeTambahWisata.setText(", " + longitude.toString());
 
         markerOptions.title("Your Position");
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
@@ -335,5 +427,57 @@ public class TambahWisata extends AppCompatActivity implements OnMapReadyCallbac
 
 
         }
+    }
+
+
+    public void procedTambahWisata(){
+        progressDialog = ProgressDialog.show(mContext, null, "Please Wait ...", true, false);
+
+        baseAPIService.tambahWisataRequest(
+                titleTambahWisata.getText().toString(),
+                descriptionTambahWisata.getText().toString(),
+                selectId,
+                latitude,
+                longitude,
+                user.getId_user(),
+                ImageUtility.convert(imageSelected)
+
+        )
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.isSuccessful()){
+                            progressDialog.dismiss();
+                            try {
+                                JSONObject jsonResult = new JSONObject(response.body().string());
+
+                                if (jsonResult.getString("error").equals("false")){
+                                    Toast.makeText(mContext, "Your contribution make us alive, thank you", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(TambahWisata.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                } else {
+                                    String error_message = jsonResult.getString("error_msg");
+                                    Toast.makeText(mContext, error_message, Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            Log.i("debug", "onResponse: FAILED");
+                            progressDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                        Log.e("debug", "onFailure: ERROR >" + t.getMessage());
+                        Toast.makeText(mContext, "Bad Network", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 }

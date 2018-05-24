@@ -30,10 +30,10 @@ public interface BaseAPIService {
     @POST("tambahWisata.php")
     Call<ResponseBody> tambahWisataRequest(@Field("title") String title,
                                            @Field("description") String descrition,
-                                           @Field("category") String category,
-                                           @Field("latitude") String latitude,
-                                           @Field("longitude") String longitude,
-                                           @Field("id_user") String id_user,
+                                           @Field("category") int category,
+                                           @Field("latitude") Double latitude,
+                                           @Field("longitude") Double longitude,
+                                           @Field("id_user") int id_user,
                                            @Field("image") String image);
 
     @GET("listWisataAlam.php")

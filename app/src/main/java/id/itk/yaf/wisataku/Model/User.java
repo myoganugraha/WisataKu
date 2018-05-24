@@ -76,6 +76,9 @@ public class User {
         return profile_picture;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
 
     //SETTER
 
@@ -108,4 +111,7 @@ public class User {
         this.profile_picture = profile_picture;
     }
 
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 }

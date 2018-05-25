@@ -177,6 +177,7 @@ public class WisataFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 JSONResponseWisata jsonResponseWisata = response.body();
 
                 Log.d("tag","hasil -> "+ Arrays.toString(jsonResponseWisata.getData()));
+
                 wisataList = new ArrayList<>(Arrays.asList(jsonResponseWisata.getData()));
                 recyclerviewListWisataAdapter = new RecyclerviewListWisataAdapter(getActivity(), wisataList);
                 recyclerviewAlamFragmentWisata.setAdapter(recyclerviewListWisataAdapter);

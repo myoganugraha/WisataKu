@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.shashank.sony.fancytoastlib.FancyToast;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -108,25 +109,26 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(name.getText().toString().length() < 3){
-                    Toast.makeText(mContext, "Give use your fullname, hooman", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(mContext, "Give use your fullname, hooman", FancyToast.LENGTH_SHORT, FancyToast.INFO, true).show();;
                 }
                 else if(email.getText().toString().length() < 7){
-                    Toast.makeText(mContext, "Real email hooman", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(mContext, "Real email hooman", FancyToast.LENGTH_SHORT, FancyToast.INFO, true).show();;
                 }
                 else if(!isValidEmail(email.getText().toString())){
-                    Toast.makeText(mContext, "Nah, you get caught using fake email", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(mContext, "Nah, you get caught using fake email", FancyToast.LENGTH_SHORT, FancyToast.ERROR, true).show();;
+
                 }
                 else if(username.getText().toString().length() < 6){
-                    Toast.makeText(mContext, "That username to short, hooman", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(mContext, "That username to short, hooman", FancyToast.LENGTH_SHORT, FancyToast.INFO, true).show();;
                 }
                 else if(password.getText().toString().length() < 6){
-                    Toast.makeText(mContext, "The password was to short, we can't save it", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(mContext, "The password was to short, we can't save it", FancyToast.LENGTH_SHORT, FancyToast.WARNING, true).show();;
                 }
                 else  if(!Patterns.WEB_URL.matcher(website.getText().toString()).matches()){
-                    Toast.makeText(mContext, "Just give your link, hooman", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(mContext, "Just give your link, hooman", FancyToast.LENGTH_SHORT, FancyToast.WARNING, true).show();;
                 }
                 else if(displayPictureRegister.getVisibility() == View.GONE){
-                    Toast.makeText(mContext, "Le me see your face, hooman", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(mContext, "Le me see your face, hooman", FancyToast.LENGTH_SHORT, FancyToast.INFO, true).show();;
                 }
                 else {
                     procedRegister();

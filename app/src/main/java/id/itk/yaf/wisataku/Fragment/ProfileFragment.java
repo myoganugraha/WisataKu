@@ -7,9 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,24 +30,48 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.itk.yaf.wisataku.API.BaseAPIService;
+import id.itk.yaf.wisataku.API.UtilsAPI;
+import id.itk.yaf.wisataku.Activity.EditProfile;
 import id.itk.yaf.wisataku.Activity.Login;
+import id.itk.yaf.wisataku.Adapter.RecyclerviewFragmentProfileAdapter;
+import id.itk.yaf.wisataku.JSONResponse.JSONResponseWisata;
 import id.itk.yaf.wisataku.Model.User;
+import id.itk.yaf.wisataku.Model.Wisata;
 import id.itk.yaf.wisataku.R;
 import id.itk.yaf.wisataku.Utility.SessionManager;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private Context mContext;
     private SessionManager session;
     private Unbinder unbinder;
+    private BaseAPIService baseAPIService;
+
+    private RecyclerviewFragmentProfileAdapter recyclerviewFragmentProfileAdapter;
+    private List<Wisata> wisataList = new ArrayList<Wisata>();
 
     SharedPreferences mPrefs;
+    User user;
 
     @BindView(R.id.fullnameProfile)
     TextView fullnameProfile;
@@ -56,6 +84,12 @@ public class ProfileFragment extends Fragment {
 
     @BindView(R.id.displayPictureProfile)
     CircleImageView profilePicture;
+
+    @BindView(R.id.recycler_view_fragment_profile)
+    RecyclerView recyclerViewProfile;
+
+    @BindView(R.id.swipeToRefreshProfile)
+    SwipeRefreshLayout swipeRefreshLayoutProfile;
 
 
     public static ProfileFragment newInstance() {
@@ -77,16 +111,14 @@ public class ProfileFragment extends Fragment {
         session = new SessionManager(getActivity());
         unbinder = ButterKnife.bind(this, view);
 
+        baseAPIService = UtilsAPI.getAPIService();
+
         mPrefs = this.getActivity().getSharedPreferences(Login.MY_PREFS, Context.MODE_PRIVATE);
-
-        Log.d("hallo", "sudah masuk profile fragment");
-
-
 
         Gson gson = new Gson();
         String json_response = mPrefs.getString("UserResponse", "");
         json_response = json_response.substring(22, json_response.length() - 1);
-        User user = gson.fromJson(json_response, User.class);
+        user = gson.fromJson(json_response, User.class);
 
         fullnameProfile.setText(user.getName());
         profileWebsite.setText(user.getWebsite());
@@ -97,7 +129,45 @@ public class ProfileFragment extends Fragment {
                 .into(profilePicture);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(user.getUsername());
+
+
+        //RECYCLERVIEW PROFILE
+        recyclerViewProfile.setHasFixedSize(true);
+        recyclerViewProfile.setNestedScrollingEnabled(false);
+        LinearLayoutManager llmProfile = new LinearLayoutManager(getActivity());
+        llmProfile.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViewProfile.setLayoutManager(llmProfile);
+        loadJSONWisataProfile();
+
+        swipeRefreshLayoutProfile.setOnRefreshListener(this);
+
         return view;
+    }
+
+    private void loadJSONWisataProfile() {
+        baseAPIService.getPostById(user.getId_user())
+                .enqueue(new Callback<JSONResponseWisata>() {
+
+                    @Override
+                    public void onResponse(Call<JSONResponseWisata> call, Response<JSONResponseWisata> response) {
+                        JSONResponseWisata jsonResponseWisataProfile = response.body();
+                        Log.d("cek data wisata : ", Arrays.toString(jsonResponseWisataProfile.getData()));
+
+                        wisataList = new ArrayList<>(Arrays.asList(jsonResponseWisataProfile.getData()));
+                        recyclerviewFragmentProfileAdapter = new RecyclerviewFragmentProfileAdapter(wisataList, getActivity());
+                        recyclerViewProfile.setAdapter(recyclerviewFragmentProfileAdapter);
+                        recyclerviewFragmentProfileAdapter.notifyDataSetChanged();
+
+                        swipeRefreshLayoutProfile.setRefreshing(false);
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<JSONResponseWisata> call, @NonNull Throwable t) {
+                        Log.e("tag", t.getMessage());
+
+                    }
+                });
     }
 
     @Override
@@ -143,4 +213,14 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onRefresh() {
+        loadJSONWisataProfile();
+    }
+
+    @OnClick(R.id.edit_profile)
+    public void editProfie(){
+        Intent intent = new Intent(getActivity(), EditProfile.class);
+        startActivity(intent);
+    }
 }

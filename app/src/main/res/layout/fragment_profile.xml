@@ -1,65 +1,110 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout android:id="@+id/swipeToRefreshProfile"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:shimmer="http://schemas.android.com/tools"
-    android:padding="16dp"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
-
-    <RelativeLayout
-        android:id="@+id/lineearLayoutProfile1"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp">
-
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/displayPictureProfile"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/grey"
-            android:src="@drawable/ic_person_24dp"
-            android:layout_marginStart="25dp"/>
-
-
-
-        <RelativeLayout
+        android:background="@color/white">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/displayPictureProfile"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="35dp">
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:padding="24dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:background="@color/white">
 
-            <TextView
-                android:id="@+id/fullnameProfile"
-                android:layout_width="wrap_content"
+
+            <RelativeLayout
+                android:id="@+id/lineearLayoutProfile1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/dummy_username"
-                android:textStyle="bold"/>
+                android:layout_marginTop="8dp">
 
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/displayPictureProfile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/grey"
+                    android:src="@drawable/ic_person_24dp"/>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/displayPictureProfile"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="35dp">
+
+                    <TextView
+                        android:id="@+id/fullnameProfile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dummy_username"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/profile_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:layout_below="@id/fullnameProfile"/>
+
+                    <TextView
+                        android:id="@+id/profile_website"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/profile_email"
+                        android:text="@string/dummy"
+                        android:autoLink="web"
+                        android:layout_marginBottom="8dp"/>
+
+                    <Button
+                        android:id="@+id/edit_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/profile_website"
+                        android:text="@string/edit_profile"
+                        android:background="@drawable/button_select_image_register"
+                        android:textSize="11sp"/>
+                </RelativeLayout>
+
+
+            </RelativeLayout>
             <TextView
-                android:id="@+id/profile_email"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:layout_below="@id/fullnameProfile"/>
+                android:text="Your Contribution"
+                android:layout_marginTop="30dp"
+                android:textSize="18sp"/>
+            <View
+                android:layout_marginTop="8dp"
+                style="@style/Divider"/>
 
-            <TextView
-                android:id="@+id/profile_website"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/profile_email"
-                android:text="@string/dummy"
-                android:autoLink="web"/>
-        </RelativeLayout>
+                android:layout_marginTop="4dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_fragment_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
 
 
-    </RelativeLayout>
 
+        </LinearLayout>
 
+    </android.support.v4.widget.NestedScrollView>
 
-</LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
+

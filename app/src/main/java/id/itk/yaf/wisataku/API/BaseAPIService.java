@@ -36,6 +36,20 @@ public interface BaseAPIService {
                                            @Field("id_user") int id_user,
                                            @Field("image") String image);
 
+    @FormUrlEncoded
+    @POST("editProfile.php")
+    Call<ResponseBody> editProfile(@Field("id_user") int id_user,
+                                   @Field("name") String name,
+                                   @Field("email") String email,
+                                   @Field("website") String website,
+                                   @Field("profile_picture") String profile_picture);
+
+
+
+    @FormUrlEncoded
+    @POST("listWisataDiProfile.php")
+    Call<JSONResponseWisata> getPostById (@Field("id_user") int id_user);
+
     @GET("listWisataAlam.php")
     Call<JSONResponseWisata> getJSONAlam();
 
